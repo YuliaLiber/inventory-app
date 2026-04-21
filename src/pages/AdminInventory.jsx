@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { getInventory, deleteItem } from "../services/inventoryApi";
 import { useNavigate } from "react-router-dom";
+import "./admin.css";
 
 export default function AdminInventory() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,43 +17,55 @@ export default function AdminInventory() {
   async function loadData() {
     try {
       setLoading(true);
+      setError(null);
+
       const data = await getInventory();
       setItems(data || []);
     } catch (e) {
-      setError("Помилка завантаження");
+      setError("Помилка завантаження даних");
     } finally {
       setLoading(false);
     }
   }
 
   async function handleDelete(id) {
-    const confirmDelete = window.confirm("Точно видалити?");
-    if (!confirmDelete) return;
+    const ok = window.confirm("Видалити елемент?");
+    if (!ok) return;
 
     await deleteItem(id);
-    setItems(items.filter((item) => item.id !== id));
+    setItems(items.filter((i) => i.id !== id));
   }
 
-  if (loading) return <h2>Завантаження...</h2>;
-  if (error) return <h2>{error}</h2>;
+  // 🔥 LOADING STATE
+  if (loading) {
+    return <div className="state">⏳ Завантаження...</div>;
+  }
+
+  // 🔥 ERROR STATE
+  if (error) {
+    return <div className="state error">❌ {error}</div>;
+  }
 
   return (
-    <div style={{ maxWidth: "900px", margin: "50px auto" }}>
-      <h1>📦 Inventory Admin</h1>
+    <div className="container">
+      <div className="header">
+        <h1>📦 Inventory Admin</h1>
 
-      <button onClick={() => navigate("/create")}>
-        ➕ Додати
-      </button>
+        <button className="addBtn" onClick={() => navigate("/create")}>
+          ➕ Додати
+        </button>
+      </div>
 
+      {/* 🔥 EMPTY STATE */}
       {items.length === 0 ? (
-        <p>Список порожній</p>
+        <div className="state">📭 Немає даних</div>
       ) : (
-        <table border="1" cellPadding="10" width="100%">
+        <table className="table">
           <thead>
             <tr>
+              <th>Фото</th>
               <th>Назва</th>
               <th>Опис</th>
-              <th>Фото</th>
               <th>Дії</th>
             </tr>
           </thead>
@@ -59,22 +73,24 @@ export default function AdminInventory() {
           <tbody>
             {items.map((item) => (
               <tr key={item.id}>
+                <td>
+                  <img src={item.photo} className="img" />
+                </td>
+
                 <td>{item.inventory_name}</td>
                 <td>{item.description}</td>
-                <td>
-                  <img src={item.photo} width="50" />
-                </td>
-                <td>
+
+                <td className="actions">
                   <button onClick={() => navigate(`/details/${item.id}`)}>
-                    👁 View
+                    View
                   </button>
 
                   <button onClick={() => navigate(`/edit/${item.id}`)}>
-                    ✏️ Edit
+                    Edit
                   </button>
 
                   <button onClick={() => handleDelete(item.id)}>
-                    ❌ Delete
+                    Delete
                   </button>
                 </td>
               </tr>

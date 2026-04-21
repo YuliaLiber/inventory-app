@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getItem, updateItem } from "../services/inventoryApi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import "../pages/admin.css";
 
 export default function AdminInventoryEdit() {
   const { id } = useParams();
@@ -12,10 +13,10 @@ export default function AdminInventoryEdit() {
   });
 
   useEffect(() => {
-    loadItem();
+    load();
   }, []);
 
-  async function loadItem() {
+  async function load() {
     const data = await getItem(id);
     setForm(data);
   }
@@ -31,25 +32,23 @@ export default function AdminInventoryEdit() {
   }
 
   return (
-    <div>
-      <h2>Редагування</h2>
+    <div className="card">
+      <h2>✏️ Edit</h2>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form">
         <input
           name="inventory_name"
-          value={form.inventory_name}
+          value={form.inventory_name || ""}
           onChange={handleChange}
         />
-        <br />
 
         <input
           name="description"
-          value={form.description}
+          value={form.description || ""}
           onChange={handleChange}
         />
-        <br />
 
-        <button type="submit">Зберегти</button>
+        <button type="submit">Оновити</button>
       </form>
     </div>
   );

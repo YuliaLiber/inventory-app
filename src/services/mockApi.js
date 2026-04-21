@@ -19,7 +19,7 @@ let inventory = JSON.parse(localStorage.getItem("inventory")) || [
     id: 3,
     inventory_name: "Laptop",
     description: "Dell 14 Plus Laptop",
-    photo: "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/dell/dell-15-intel-3530/media-gallery/laptop-dell-dc15250nt-bk-plastic-gallery-1.psd?fmt=png-alpha&pscan=auto&scl=1&hei=804&wid=1254&qlt=100,1&resMode=sharp2&size=1254,804&chrss=full",
+    photo: "https://store.solidsolutions.co.uk/wp-content/uploads/2025/09/dell-pro-max-16-plus-facing-forward.webp",
   },
   {
     id: 4,
@@ -79,7 +79,7 @@ export async function mockFetch(url, options = {}) {
   if (url.startsWith(BASE_URL + "/") && method === "DELETE") {
     const id = Number(url.split("/").pop());
     inventory = inventory.filter((i) => i.id !== id);
-    
+
     localStorage.setItem("inventory", JSON.stringify(inventory));
     return { json: async () => ({ success: true }) };
   }
