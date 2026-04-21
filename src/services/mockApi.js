@@ -1,6 +1,8 @@
 const BASE_URL = "https://api.example.com/inventory";
 
-let inventory = [
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+let inventory = JSON.parse(localStorage.getItem("inventory")) || [
   {
     id: 1,
     inventory_name: "Laptop Pro",
@@ -39,7 +41,6 @@ let inventory = [
   },
 ];
 
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 export async function mockFetch(url, options = {}) {
   await delay(300);
@@ -59,6 +60,8 @@ export async function mockFetch(url, options = {}) {
     const body = JSON.parse(options.body);
     const newItem = { id: Date.now(), ...body };
     inventory.push(newItem);
+
+    localStorage.setItem("inventory", JSON.stringify(inventory));
     return { json: async () => newItem };
   }
 
@@ -69,14 +72,15 @@ export async function mockFetch(url, options = {}) {
     inventory = inventory.map((item) =>
       item.id === id ? { ...item, ...body } : item
     );
-
+    localStorage.setItem("inventory", JSON.stringify(inventory));
     return { json: async () => inventory.find((i) => i.id === id) };
   }
 
   if (url.startsWith(BASE_URL + "/") && method === "DELETE") {
     const id = Number(url.split("/").pop());
     inventory = inventory.filter((i) => i.id !== id);
-
+    
+    localStorage.setItem("inventory", JSON.stringify(inventory));
     return { json: async () => ({ success: true }) };
   }
 }
