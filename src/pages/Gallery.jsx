@@ -1,31 +1,40 @@
 import { useEffect, useState } from "react";
 import { getInventory } from "../services/inventoryApi";
+import InventoryCard from "../components/gallery/InventoryCard";
 
-export default function Gallery(){
+export default function Gallery() {
+  const [items, setItems] = useState([]);
 
-const [items,setItems]=useState([]);
+  useEffect(() => {
+    loadData();
+  }, []);
 
-useEffect(()=>{
- console.log("Gallery mounted");
- loadData();
-},[]);
+  async function loadData() {
+    const data = await getInventory();
+    setItems(data || []);
+  }
 
-async function loadData(){
- const data=await getInventory();
- console.log("DATA:",data);
- setItems(data || []);
-}
+  function handleQuickView(item) {
+    alert(`${item.inventory_name}\n\n${item.description}`);
+  }
 
-return(
-<div>
-<h1>Gallery</h1>
+  return (
+    <div style={{ maxWidth: "1000px", margin: "40px auto", fontFamily: "Arial" }}>
+      <h1>📦 Inventory Gallery</h1>
 
-{items.map(i=>(
- <div key={i.id}>
-  {i.inventory_name}
- </div>
-))}
-
-</div>
-);
+      {items.length === 0 ? (
+        <p>Список порожній</p>
+      ) : (
+        <div className="galleryGrid">
+          {items.map((item) => (
+            <InventoryCard
+              key={item.id}
+              item={item}
+              onQuickView={handleQuickView}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
