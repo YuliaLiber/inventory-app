@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { getInventory } from "../services/inventoryApi";
 import InventoryCard from "../components/gallery/InventoryCard";
+import InventoryQuickView from "../components/gallery/InventoryQuickView";
+import "../pages/admin.css";
 
 export default function Gallery() {
   const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -15,15 +18,19 @@ export default function Gallery() {
   }
 
   function handleQuickView(item) {
-    alert(`${item.inventory_name}\n\n${item.description}`);
+    setSelectedItem(item);
+  }
+
+  function closeModal() {
+    setSelectedItem(null);
   }
 
   return (
-    <div style={{ maxWidth: "1000px", margin: "40px auto", fontFamily: "Arial" }}>
+    <div className="container">
       <h1>📦 Inventory Gallery</h1>
 
       {items.length === 0 ? (
-        <p>Список порожній</p>
+        <p className="state">Список порожній</p>
       ) : (
         <div className="galleryGrid">
           {items.map((item) => (
@@ -35,6 +42,12 @@ export default function Gallery() {
           ))}
         </div>
       )}
+
+      {/* MODAL */}
+      <InventoryQuickView
+        item={selectedItem}
+        onClose={closeModal}
+      />
     </div>
   );
 }

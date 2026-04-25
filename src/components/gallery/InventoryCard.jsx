@@ -8,7 +8,10 @@ export default function InventoryCard({ item, onQuickView }) {
 
       <p>{item.description}</p>
 
-      <button onClick={() => onQuickView(item)}>
+      <button onClick={() => {
+        console.log("CLICKED");
+        onQuickView(item);
+      }}>
         Quick View
       </button>
 
