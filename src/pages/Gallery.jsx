@@ -38,12 +38,22 @@ export default function Gallery() {
   }
 
   if (loading) {
-    return (
-      <div className="container">
-        <h2 className="state">⏳ Завантаження...</h2>
+  return (
+    <div className="container">
+      <h2 className="state">⏳ Завантаження...</h2>
+
+      <div className="galleryGrid">
+        {[1,2,3,4].map(i=>(
+          <div key={i} className="productCard skeleton">
+            <div style={{height:"160px", background:"#eee", borderRadius:"10px"}} />
+            <div style={{height:"20px", margin:"10px 0", background:"#eee"}} />
+            <div style={{height:"20px", background:"#eee"}} />
+          </div>
+        ))}
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (error) {
     return (

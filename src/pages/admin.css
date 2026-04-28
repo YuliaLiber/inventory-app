@@ -175,7 +175,7 @@
 /* ГЛОБАЛЬНІ ЗМІННІ (якщо вони не задані в index.css, ці спрацюють як запасні) */
 :root {
   --bg: #ffffff;
-  --accent: #ff6b00; /* Яскравий помаранчевий для кнопки */
+  --accent: #c35a15; /* Яскравий помаранчевий для кнопки */
   --accent-hover: #e56000;
   --text: #333333;
   --border: #eeeeee;
@@ -183,38 +183,37 @@
 }
 
 /* GRID */
-.galleryGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-  padding: 20px;
+.galleryGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:20px;
+  padding:20px;
 }
 
 /* CARD */
-.productCard {
-  background: var(--bg);
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  text-align: center;
-  border: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.2s ease;
+.productCard{
+  position:relative;
+  background:var(--bg);
+  padding:16px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  transition:0.25s ease;
+  text-align:center;
 }
 
-.productCard:hover {
-  transform: translateY(-5px);
+.productCard:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.12);
 }
 
-.productCard img {
-  width: 100%;
-  height: 180px;
-  object-fit: contain; /* Щоб фото техніки не обрізалося */
-  border-radius: 12px;
-  margin-bottom: 15px;
-  background: #f9f9f9;
+.productCard img{
+  width:100%;
+  height:200px;
+  object-fit:contain;
+  border-radius:10px;
+  background:#f8f8f8;
+  margin-bottom:10px;
 }
 
 .productCard h3 {
@@ -306,4 +305,15 @@
 
 .closeBtn:hover {
   background: #ddd;
+}
+
+.state{
+  text-align:center;
+  padding:40px;
+  font-size:18px;
+  color:var(--text);
+}
+
+.error{
+  color:#e74c3c;
 }
